@@ -1,34 +1,141 @@
-# quantum-option-pricing-qml
+# Sequential Photonic QRC for Swaption Surface Prediction
 
-Hackathon-ready repository with structured Level-1 and Level-2 QML modules.
+**Team:** FinteQ  
+**Challenge:** Quandela Swaptions Surface Prediction  
+**Level 1 R²:** 0.9967 | **Level 2 R²:** 0.9997
 
-## Final Level-2 Model Location
-- `src/level2_secondary/hybrid_model.py` (full final model code)
-- `src/level2_secondary/qml_extension.py` (clean callable wrapper)
+---
 
-## Quick Run (Level-2)
+## Overview
 
-1. Create env + install:
-```bash
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
+Implementation of Sequential Photonic Quantum Reservoir Computing (QRC) for predicting interest rate swaption surfaces using MerLin's boson sampling simulation (SLOS).
+
+**Method inspired by:** *Establishing Baselines for Photonic Quantum Machine Learning* (arXiv:2510.25839)
+
+### Results
+- **Level 1 (Future Prediction):** R² = 0.9967 using Sequential QRC QR2 ensemble
+- **Level 2 (Missing Data):** R² = 0.9997 using QFinger quantum-classical hybrid
+- Classical baseline (naive persistence) achieves R² = 0.9988 on Level 1
+
+---
+
+## Dataset
+
+Swaption volatility surface with 494 time steps × 224 dimensions (tenor/maturity grid). High autocorrelation structure makes this a challenging but realistic financial forecasting task.
+
+---
+
+## Methodology
+
+### Level 1: Sequential Photonic QRC
+
+**Pipeline:**
+```
+224D Input → PCA(3) → Scale[-π,π] → Sequential Reservoir → Ridge → Predict
 ```
 
-2. Run on judge template:
+**Architecture:**
+- 10-mode photonic circuit, 5 photons
+- Hidden state feedback with memory depth of 3 steps
+- QR2 ensemble: two reservoirs (different seeds) → 504D measurement space
+- Chaos parameter π (tested 0.1→8.0, performance flat)
+
+**Implementation:** MerLin SLOS (software photonic simulation)
+
+### Level 2: QFinger Hybrid
+
+Quantum-classical weighted ensemble (90% quantum / 10% classical) for missing data imputation.
+
+---
+
+## Results
+
+### Level 1: 6-Step Future Prediction
+
+| Model | Test R² |
+|-------|---------|
+| Naive Persistence | 0.9988 |
+| Classical Ridge | 0.9988 |
+| Linear Reservoir | 0.9970 |
+| Sequential QRC QR2 | 0.9967 |
+| Sequential QRC QR1 | 0.9959 |
+| Simple QRC | 0.9873 |
+
+*Note: Classical baselines achieve near-ceiling performance due to high autocorrelation in the data.*
+
+### Level 2: Missing Data Imputation
+
+QFinger Hybrid: R² = 0.9997
+
+---
+
+## Experiments
+
+**Systematic ablation studies (19 total):**
+- Memory depth (1-5), photon count (3-7), PCA components (2-10)
+- Edge of chaos sweep (chaos_scale 0.1→8.0) → performance flat across all values
+- Reservoir ensemble size (QR1 vs QR2)
+- Residual prediction vs direct prediction
+
+**Key finding:** Dataset geometry limits performance regardless of reservoir configuration. The near-random-walk structure leaves minimal exploitable nonlinear dynamics.
+
+---
+
+## Installation
+
 ```bash
-PYTHONPATH=src .venv/bin/python -c "from level2_secondary.qml_extension import run_level2_qml_extension; run_level2_qml_extension('inputs/test_template.xlsx','results/test_template_filled_hybrid.xlsx','results/level2_validation_report.json',min_quantum_weight=0.50,cv_repeats=3)"
+pip install merlinquantum torch numpy pandas scikit-learn openpyxl
 ```
 
-Before running, place template file at `inputs/test_template.xlsx`.
+---
 
-## Notebook Run Order (Easy Evaluation)
-- `notebooks/01_data_exploration.ipynb` (loads Level-1 + Level-2 datasets)
-- `notebooks/02_level1_step_by_step.ipynb` (runs Level-1 A → B → C → D)
+## Usage
 
-## Folder Tree
-- `notebooks/` — `01_data_exploration.ipynb`, `02_level1_step_by_step.ipynb`
-- `inputs/` — place Level-2 template (`test_template.xlsx`)
-- `src/level1_primary/` — friend-provided level-1 files (`level1_a.py`, `level1_b.py`, `level1_c.py`, `level1_d.py`)
-- `src/level2_secondary/` — final level-2 hybrid model + extension
-- `results/` — metrics and generated outputs
-- `docs/` — methodology and references
+Run the notebook `level1_sequential_qrc_QR2.ipynb`:
+1. Cell 1: Load data & PCA preprocessing
+2. Cell 2: Define SequentialPhotonicReservoir class  
+3. Cell 3: Train QR2 ensemble & evaluate
+4. Cell 4: Retrain on full 494 rows & generate predictions
+
+Output: `submission_final.xlsx` with 6 future predictions
+
+---
+
+## Technical Details
+
+**Sequential reservoir with hidden state feedback:**
+
+```python
+def _encode_sequential(self, x_sequence):
+    hidden_state = np.zeros(3)
+    for step in range(3):  # memory depth
+        x_combined = np.tanh(x_sequence[step] + hidden_state)
+        out = self.photonic_circuit.compute(x_combined)
+        hidden_state = np.tanh(out[:3]) * np.pi  # phase feedback
+    return out  # 252D measurement
+```
+
+**Pipeline:** 224D → PCA(3) → scale[-π,π] → sequences → QR2(504D) → ridge → inverse transform
+
+---
+
+## Repository Structure
+
+```
+├── README.md
+├── level1_sequential_qrc_QR2.ipynb       # Main notebook
+├── submission_final.xlsx                  # Level 1 predictions
+├── test_template_filled_hybrid.xlsx      # Level 2 predictions
+└── FinteQ_Final.pdf                      # Technical summary
+```
+
+---
+
+## References
+
+- [Establishing Baselines for Photonic Quantum Machine Learning](https://arxiv.org/abs/2510.25839) (arXiv:2510.25839)
+- MerLin framework by Quandela
+
+---
+
+**Team FinteQ** | Quandela Challenge 2026
