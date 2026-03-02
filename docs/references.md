@@ -1,5 +1,13 @@
 # References
 
+## Level-1 References
+
+1. *Establishing Baselines for Photonic Quantum Machine Learning* (arXiv:2510.25839)  
+   https://arxiv.org/abs/2510.25839
+2. MerLin framework by Quandela (implementation framework used in this project)
+
+## Level-2 References (Used / Inspired / Referenced)
+
 1. Cerqueira, Torgo, Mozetic (2020), *Evaluating Time Series Forecasting Models*  
    https://arxiv.org/abs/1905.11744
 2. Hoerl, Kennard (1970), *Ridge Regression: Biased Estimation for Nonorthogonal Problems*  
