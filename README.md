@@ -20,7 +20,7 @@ PYTHONPATH=src .venv/bin/python -c "from level2_secondary.qml_extension import r
 ```
 
 ## Folder Tree
-- `notebooks/` — exploration, classical baseline, quantum model notebooks
+- `notebooks/` — exploration, classical baseline, quantum model notebooks + `04_level1_step_by_step.ipynb`
 - `src/level1_primary/` — friend-provided level-1 files (`level1_a.py`, `level1_b.py`, `level1_c.py`, `level1_d.py`)
 - `src/level2_secondary/` — final level-2 hybrid model + extension
 - `results/` — metrics and generated outputs
