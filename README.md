@@ -19,8 +19,15 @@ python3 -m venv .venv
 PYTHONPATH=src .venv/bin/python -c "from level2_secondary.qml_extension import run_level2_qml_extension; run_level2_qml_extension('inputs/test_template.xlsx','results/test_template_filled_hybrid.xlsx','results/level2_validation_report.json',min_quantum_weight=0.50,cv_repeats=3)"
 ```
 
+Before running, place template file at `inputs/test_template.xlsx`.
+
+## Notebook Run Order (Easy Evaluation)
+- `notebooks/01_data_exploration.ipynb` (loads Level-1 + Level-2 datasets)
+- `notebooks/02_level1_step_by_step.ipynb` (runs Level-1 A → B → C → D)
+
 ## Folder Tree
-- `notebooks/` — exploration, classical baseline, quantum model notebooks + `04_level1_step_by_step.ipynb`
+- `notebooks/` — `01_data_exploration.ipynb`, `02_level1_step_by_step.ipynb`
+- `inputs/` — place Level-2 template (`test_template.xlsx`)
 - `src/level1_primary/` — friend-provided level-1 files (`level1_a.py`, `level1_b.py`, `level1_c.py`, `level1_d.py`)
 - `src/level2_secondary/` — final level-2 hybrid model + extension
 - `results/` — metrics and generated outputs
