@@ -1,0 +1,7 @@
+Fresh Level-2 metrics (qboost run)
+- Quantum weight (w_q): 0.70
+- Classical weight (w_raw): 0.30
+- Naive weight (w_naive): 0.00
+- Proxy RMSE mean: 0.00168166545661363
+- Proxy MAE mean: 0.0011258832135399165
+- Proxy R2 mean: 0.999713775578282

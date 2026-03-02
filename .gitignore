@@ -5,4 +5,3 @@ __pycache__/
 results/plots/*.png
 results/plots/*.jpg
 results/plots/*.pdf
-results/metrics.txt
