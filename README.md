@@ -122,19 +122,38 @@ def _encode_sequential(self, x_sequence):
 ## Repository Structure
 
 ```
+.
 ├── README.md
-├── level1_sequential_qrc_QR2.ipynb       # Main notebook
-├── submission_final.xlsx                  # Level 1 predictions
-├── test_template_filled_hybrid.xlsx      # Level 2 predictions
-└── FinteQ_Final.pdf                      # Technical summary
+├── requirements.txt
+├── docs/
+│   ├── FinteQ_Final_Report.pdf
+│   └── references.md
+├── inputs/
+│   └── PLACE_LEVEL2_TEMPLATE_HERE.md
+├── notebooks/
+│   ├── 01_data_exploration.ipynb
+│   ├── 02_level1_step_by_step.ipynb
+│   └── 03_level2_step_by_step.ipynb
+├── results/
+│   ├── metrics.txt
+│   ├── level2_hard_cv_q80_report.json
+│   └── test_template_filled_hybrid_q80.xlsx
+└── src/
+    ├── level1_primary/
+    │   ├── level1_a.py
+    │   ├── level1_b.py
+    │   ├── level1_c.py
+    │   └── level1_d.py
+    └── level2_secondary/
+        ├── hybrid_model.py
+        └── qml_extension.py
 ```
 
 ---
 
 ## References
 
-- [Establishing Baselines for Photonic Quantum Machine Learning](https://arxiv.org/abs/2510.25839) (arXiv:2510.25839)
-- MerLin framework by Quandela
+All references are listed in [docs/references.md](docs/references.md).
 
 ---
 
