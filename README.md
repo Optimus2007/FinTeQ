@@ -1,155 +1,59 @@
-# Sequential Photonic QRC for Swaption Surface Prediction
+# FinteQ — Photonic Quantum Kernel for Swaption IVS Forecasting
 
-**Team:** FinteQ  
-**Challenge:** Quandela Swaptions Surface Prediction  
-**Level 1 R²:** 0.9967 | **Level 2 R²:** 0.9997
+> Quandela Swaptions QML Hackathon 2026 · Perceval · MerLin · QPU-Compatible
 
----
+## What We Did
 
-## Overview
+Implemented a fidelity-based photonic quantum kernel ([Yin et al. 2024](https://arxiv.org/abs/2407.20364)) on Perceval's SLOS backend for swaption implied volatility surface forecasting (494 training days → 6 predictions, 224-dimensional surface).
 
-Implementation of Sequential Photonic Quantum Reservoir Computing (QRC) for predicting interest rate swaption surfaces using MerLin's boson sampling simulation (SLOS).
-
-**Method inspired by:** *Establishing Baselines for Photonic Quantum Machine Learning* (arXiv:2510.25839)
-
-### Results
-- **Level 1 (Future Prediction):** R² = 0.9967 using Sequential QRC QR2 ensemble
-- **Level 2 (Missing Data):** R² = 0.9997 using QFinger quantum-classical hybrid
-- Classical baseline (naive persistence) achieves R² = 0.9988 on Level 1
-
----
-
-## Dataset
-
-Swaption volatility surface with 494 time steps × 224 dimensions (tenor/maturity grid). High autocorrelation structure makes this a challenging but realistic financial forecasting task.
-
----
-
-## Methodology
-
-### Level 1: Sequential Photonic QRC
-
-**Pipeline:**
-```
-224D Input → PCA(3) → Scale[-π,π] → Sequential Reservoir → Ridge → Predict
-```
-
-**Architecture:**
-- 10-mode photonic circuit, 5 photons
-- Hidden state feedback with memory depth of 3 steps
-- QR2 ensemble: two reservoirs (different seeds) → 504D measurement space
-- Chaos parameter π (tested 0.1→8.0, performance flat)
-
-**Implementation:** MerLin SLOS (software photonic simulation)
-
-### Level 2: QFinger Hybrid
-
-Quantum-classical weighted ensemble (90% quantum / 10% classical) for missing data imputation.
-
----
+Core contribution: **first indistinguishability sweep on financial time series** — varying photon indistinguishability 0.0→1.0 to measure Hong-Ou-Mandel interference effects on prediction. Result: strictly monotonic degradation. Quantum interference measurably alters kernel geometry (diff norm=4.97) but hurts on linear data.
 
 ## Results
 
-### Level 1: 6-Step Future Prediction
+| Model | R² |
+|---|---|
+| Rolling naive (true ceiling) | 0.9981 |
+| Classical kernel (indist=0.0) | 0.9981 |
+| **Quantum kernel (indist=1.0) ★** | **0.9960** |
+| QFinger Hybrid L2 (CV) | 0.9997 |
 
-| Model | Test R² |
-|-------|---------|
-| Naive Persistence | 0.9988 |
-| Classical Ridge | 0.9988 |
-| Linear Reservoir | 0.9970 |
-| Sequential QRC QR2 | 0.9967 |
-| Sequential QRC QR1 | 0.9959 |
-| Simple QRC | 0.9873 |
+## Why Quantum Doesn't Win Here
 
-*Note: Classical baselines achieve near-ceiling performance due to high autocorrelation in the data.*
+The surface lives on a near-linear 3D manifold (PCA(3)=99.96%, autocorr R=0.9999). Complex permanents obscure linear geometry rather than enriching it. 19 ablation experiments confirm — memory saturates at depth 1, chaos scale flat, residuals white noise.
 
-### Level 2: Missing Data Imputation
+**Pre-screening criterion:** if PCA(3) > 99% and residual autocorr < 0.05, quantum advantage is unlikely.
 
-QFinger Hybrid: R² = 0.9997
-
----
-
-## Experiments
-
-**Systematic ablation studies (19 total):**
-- Memory depth (1-5), photon count (3-7), PCA components (2-10)
-- Edge of chaos sweep (chaos_scale 0.1→8.0) → performance flat across all values
-- Reservoir ensemble size (QR1 vs QR2)
-- Residual prediction vs direct prediction
-
-**Key finding:** Dataset geometry limits performance regardless of reservoir configuration. The near-random-walk structure leaves minimal exploitable nonlinear dynamics.
-
----
-
-## Installation
+## Install
 
 ```bash
-pip install merlinquantum torch numpy pandas scikit-learn openpyxl
+pip install perceval-quandela merlinquantum numpy pandas scikit-learn openpyxl pyarrow
 ```
 
----
+## Run
 
-## Usage
+```bash
+# Indistinguishability sweep (core experiment, ~30-40 min)
+python level1_kernel/indist_sweep.py
 
-Run the notebook `level1_sequential_qrc_QR2.ipynb`:
-1. Cell 1: Load data & PCA preprocessing
-2. Cell 2: Define SequentialPhotonicReservoir class  
-3. Cell 3: Train QR2 ensemble & evaluate
-4. Cell 4: Retrain on full 494 rows & generate predictions
-
-Output: `submission_final.xlsx` with 6 future predictions
-
----
-
-## Technical Details
-
-**Sequential reservoir with hidden state feedback:**
-
-```python
-def _encode_sequential(self, x_sequence):
-    hidden_state = np.zeros(3)
-    for step in range(3):  # memory depth
-        x_combined = np.tanh(x_sequence[step] + hidden_state)
-        out = self.photonic_circuit.compute(x_combined)
-        hidden_state = np.tanh(out[:3]) * np.pi  # phase feedback
-    return out  # 252D measurement
+# Generate submission predictions
+python level1_kernel/predict.py
 ```
 
-**Pipeline:** 224D → PCA(3) → scale[-π,π] → sequences → QR2(504D) → ridge → inverse transform
-
----
-
-## Repository Structure
+## Structure
 
 ```
-.
-├── README.md
-├── requirements.txt
-├── docs/
-│   ├── FinteQ_Final_Report.pdf
-│   └── references.md
-├── notebooks/
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_level1_step_by_step.ipynb
-│   └── 03_level2_step_by_step.ipynb
-├── predictions/
-│   ├── level_1_prediction.xlsx
-│   └── level_2_prediction.xlsx
-└── src/
-    ├── level1_primary/
-    │   ├── level1_01_quantum_kernel_submission.py
-    │   └── level1_02_baseline_validation.py
-    └── level2_secondary/
-        ├── hybrid_model.py
-        └── qml_extension.py
+├── level1_kernel/      # Photonic quantum kernel (L1 submission)
+├── level1_qrc/         # Sequential QRC + 19 ablations (prior work)
+├── level2_qfinger/     # QFinger hybrid (L2 submission)
+├── data/               # train.parquet, test.xlsx
+└── outputs/            # Predictions + sweep results
 ```
-
----
 
 ## References
 
-All references are listed in [docs/references.md](docs/references.md).
+- Yin et al. 2024 — Photonic Quantum Kernel ML · [arXiv:2407.20364](https://arxiv.org/abs/2407.20364)
+- Li et al. 2025 — QRC for Financial Time Series
+- [Perceval docs](https://perceval.quandela.net) · [MerLin SDK](https://merlinquantum.com)
 
 ---
-
-**Team FinteQ** | Quandela Challenge 2026
+*Team FinteQ · Quandela 2026 · 19 experiments*
