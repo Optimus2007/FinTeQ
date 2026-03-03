@@ -66,9 +66,7 @@ python level1_kernel/predict.py
 
 ## References
 
-- Yin et al. 2024 — Photonic Quantum Kernel ML · [arXiv:2407.20364](https://arxiv.org/abs/2407.20364)
-- Li et al. 2025 — QRC for Financial Time Series
-- [Perceval docs](https://perceval.quandela.net) · [MerLin SDK](https://merlinquantum.com)
+All references are listed in [docs/references.md](docs/references.md).
 
 ---
 *Team FinteQ · Quandela 2026 · 19 experiments*

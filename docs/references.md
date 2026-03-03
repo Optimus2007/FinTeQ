@@ -20,3 +20,13 @@
    https://papers.nips.cc/paper/3182-random-features-for-large-scale-kernel-machines
 6. Cerqueira, Torgo, Mozetic (2020), *Evaluating Time Series Forecasting Models*  
    https://arxiv.org/abs/1905.11744
+
+## Additional Project References
+
+1. Yin et al. (2024), *Photonic Quantum Kernel Machine Learning*  
+   https://arxiv.org/abs/2407.20364
+2. Li et al. (2025), *Quantum Reservoir Computing for Financial Time Series*
+3. Perceval documentation  
+   https://perceval.quandela.net
+4. MerLin SDK documentation  
+   https://merlinquantum.com
