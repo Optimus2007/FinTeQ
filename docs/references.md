@@ -5,6 +5,9 @@
 1. *Establishing Baselines for Photonic Quantum Machine Learning* (arXiv:2510.25839)  
    https://arxiv.org/abs/2510.25839
 2. MerLin framework by Quandela (implementation framework used in this project)
+3. Yin et al. (2024), *Photonic Quantum Kernel Machine Learning*  
+   https://arxiv.org/abs/2407.20364
+4. Li et al. (2025), *Quantum Reservoir Computing for Financial Time Series*
 
 ## Level-2 References (Used / Inspired / Referenced)
 
@@ -23,10 +26,7 @@
 
 ## Additional Project References
 
-1. Yin et al. (2024), *Photonic Quantum Kernel Machine Learning*  
-   https://arxiv.org/abs/2407.20364
-2. Li et al. (2025), *Quantum Reservoir Computing for Financial Time Series*
-3. Perceval documentation  
+1. Perceval documentation  
    https://perceval.quandela.net
-4. MerLin SDK documentation  
+2. MerLin SDK documentation  
    https://merlinquantum.com
