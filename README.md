@@ -132,6 +132,9 @@ def _encode_sequential(self, x_sequence):
 │   ├── 01_data_exploration.ipynb
 │   ├── 02_level1_step_by_step.ipynb
 │   └── 03_level2_step_by_step.ipynb
+├── predictions/
+│   ├── level_1_prediction.xlsx
+│   └── level_2_prediction.xlsx
 └── src/
     ├── level1_primary/
     │   ├── level1_01_quantum_kernel_submission.py
