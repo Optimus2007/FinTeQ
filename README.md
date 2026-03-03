@@ -50,7 +50,7 @@ python level1_kernel/predict.py
 │   └── references.md
 ├── notebooks/
 │   ├── 01_data_exploration.ipynb
-│   └── 03_level2_step_by_step.ipynb
+│   └── 02_level2_step_by_step.ipynb
 ├── predictions/
 │   ├── level_1_prediction.xlsx
 │   └── level_2_prediction.xlsx
