@@ -32,11 +32,14 @@ pip install perceval-quandela merlinquantum numpy pandas scikit-learn openpyxl p
 ## Run
 
 ```bash
-# Indistinguishability sweep (core experiment, ~30-40 min)
-python level1_kernel/indist_sweep.py
+# Level-1 photonic quantum kernel submission script
+python src/level1_primary/level1_01_quantum_kernel_submission.py
 
-# Generate submission predictions
-python level1_kernel/predict.py
+# Level-1 baseline validation
+python src/level1_primary/level1_02_baseline_validation.py
+
+# Level-2 hybrid model (secondary track)
+python src/level2_secondary/hybrid_model.py
 ```
 
 ## Structure
