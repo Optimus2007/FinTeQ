@@ -42,11 +42,11 @@ python level1_kernel/predict.py
 ## Structure
 
 ```
+├── .gitignore
 ├── Final_Report.pdf
 ├── README.md
 ├── requirements.txt
 ├── docs/
-│   ├── FinteQ_Final_Report.pdf
 │   └── references.md
 ├── notebooks/
 │   ├── 01_data_exploration.ipynb
@@ -56,12 +56,12 @@ python level1_kernel/predict.py
 │   ├── level_1_prediction.xlsx
 │   └── level_2_prediction.xlsx
 └── src/
-	├── level1_primary/
-	│   ├── level1_01_quantum_kernel_submission.py
-	│   └── level1_02_baseline_validation.py
-	└── level2_secondary/
-		├── hybrid_model.py
-		└── qml_extension.py
+    ├── level1_primary/
+    │   ├── level1_01_quantum_kernel_submission.py
+    │   └── level1_02_baseline_validation.py
+    └── level2_secondary/
+        ├── hybrid_model.py
+        └── qml_extension.py
 ```
 
 ## References
