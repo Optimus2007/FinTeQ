@@ -68,5 +68,9 @@ python level1_kernel/predict.py
 
 All references are listed in [docs/references.md](docs/references.md).
 
+## Presentation Video
+
+Watch our project presentation here: [Google Drive Video](https://drive.google.com/file/d/1xm2zRhzJcrVVupLNVXhDImOvF0_OzxR4/view?usp=sharing).
+
 ---
 *Team FinteQ · Quandela 2026 · 19 experiments*
