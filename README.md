@@ -42,11 +42,26 @@ python level1_kernel/predict.py
 ## Structure
 
 ```
-├── level1_kernel/      # Photonic quantum kernel (L1 submission)
-├── level1_qrc/         # Sequential QRC + 19 ablations (prior work)
-├── level2_qfinger/     # QFinger hybrid (L2 submission)
-├── data/               # train.parquet, test.xlsx
-└── outputs/            # Predictions + sweep results
+├── Final_Report.pdf
+├── README.md
+├── requirements.txt
+├── docs/
+│   ├── FinteQ_Final_Report.pdf
+│   └── references.md
+├── notebooks/
+│   ├── 01_data_exploration.ipynb
+│   ├── 02_level1_step_by_step.ipynb
+│   └── 03_level2_step_by_step.ipynb
+├── predictions/
+│   ├── level_1_prediction.xlsx
+│   └── level_2_prediction.xlsx
+└── src/
+	├── level1_primary/
+	│   ├── level1_01_quantum_kernel_submission.py
+	│   └── level1_02_baseline_validation.py
+	└── level2_secondary/
+		├── hybrid_model.py
+		└── qml_extension.py
 ```
 
 ## References
