@@ -134,10 +134,8 @@ def _encode_sequential(self, x_sequence):
 │   └── 03_level2_step_by_step.ipynb
 └── src/
     ├── level1_primary/
-    │   ├── level1_a.py
-    │   ├── level1_b.py
-    │   ├── level1_c.py
-    │   └── level1_d.py
+    │   ├── level1_01_quantum_kernel_submission.py
+    │   └── level1_02_baseline_validation.py
     └── level2_secondary/
         ├── hybrid_model.py
         └── qml_extension.py
